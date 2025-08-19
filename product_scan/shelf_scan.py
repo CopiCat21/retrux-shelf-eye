@@ -16,7 +16,7 @@ from oliwo_weights.xcodiff import (
 )
 
 # setup root path
-absolute_root_directory = 'E:/Projects/retrux-shelf-components-main/retruxosaproject/app_root/active_state'
+absolute_root_directory = './retruxosaproject/app_root/active_state'
 
 def predict_single_file(oliwo : OliwoModel, src : str, trg : str) -> None:
     oliwo.predict_to_file(
@@ -259,6 +259,5 @@ if __name__ == "__main__":
         print("Arguments need to be Selected")
 
     print("Exiting...")
-
 
 

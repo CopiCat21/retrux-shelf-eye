@@ -28,11 +28,10 @@ def project_root_dir() -> str:
 def default_root_devices_dir() -> str:
     """
     Match shelf_scan.py's absolute_root_directory:
-      E:/Projects/retrux-shelf-components-main/retruxosaproject/app_root/active_state/devices
+      retruxosaproject/app_root/active_state/devices
     Fallback to <home>/retruxosaproject/app_root/active_state/devices.
     """
     preferred = os.path.join(
-        "E:/Projects/retrux-shelf-components-main",
         "retruxosaproject",
         "app_root",
         "active_state",
