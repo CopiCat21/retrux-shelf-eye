@@ -287,7 +287,7 @@ class ShelfScanWorker(QThread):
 
 class CamDisplayWorker(QThread):
     """
-    Runs: <venv_python> -u <project_root>/cam_display/display_camera.py --root-dir <active_state>/product_visual --title <title>
+    Runs: <venv_python> -u <project_root>/cam_display/display_camera.py --root-dir <path> --title <title>
     Streams stdout->GUI live. Stops when window is closed or 'q' in that window; you can also stop from GUI.
     """
     log = pyqtSignal(str)
@@ -425,14 +425,16 @@ class MainWindow(QWidget):
         shelf_row.addWidget(self.shelf_service_stop_btn)
 
         # === Display row (OpenCV grid viewer) ===
-        self.display_title_edit = QLineEdit("Product Detection")
+        self.display_mode_combo = QComboBox()
+        self.display_mode_combo.addItem("Shelf Monitor (devices)", userData="devices")
+        self.display_mode_combo.addItem("Product Detection (product_visual)", userData="visual")
         self.display_start_btn = QPushButton("Open Cam Display")
         self.display_stop_btn = QPushButton("Close Cam Display")
         self.display_stop_btn.setEnabled(False)
 
         display_row = QHBoxLayout()
-        display_row.addWidget(QLabel("Display Title:"))
-        display_row.addWidget(self.display_title_edit)
+        display_row.addWidget(QLabel("Display:"))
+        display_row.addWidget(self.display_mode_combo)
         display_row.addWidget(self.display_start_btn)
         display_row.addWidget(self.display_stop_btn)
 
@@ -659,15 +661,21 @@ class MainWindow(QWidget):
 
         proj_root = project_root_dir()
         active_state = self.get_active_state_dir()
-        product_visual = os.path.join(active_state, "product_visual")
-        os.makedirs(product_visual, exist_ok=True)
 
-        title = self.display_title_edit.text().strip() or "Product Detection"
-        self.append_log(f"=== Opening Cam Display (root={product_visual}, title={title}) ===")
+        mode = self.display_mode_combo.currentData()
+        if mode == "devices":
+            root_dir = os.path.join(active_state, "devices")
+            title = "Shelf Monitor"
+        else:
+            root_dir = os.path.join(active_state, "product_visual")
+            os.makedirs(root_dir, exist_ok=True)
+            title = "Product Detection"
+
+        self.append_log(f"=== Opening Cam Display (mode={mode}, root={root_dir}) ===")
 
         self.display_worker = CamDisplayWorker(
             project_root=proj_root,
-            root_dir=product_visual,
+            root_dir=root_dir,
             title=title,
             python_exe=sys.executable
         )
