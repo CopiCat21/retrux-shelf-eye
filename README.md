@@ -36,7 +36,7 @@ A comprehensive AI-powered system for retail shelf monitoring, product detection
 ```
 retrux-shelf-eye/
 ├── README.md                           # This documentation
-├── minimal_launcher.py                 # Main control panel
+├── main_launcher.py                 # Main control panel
 ├── cam_service/
 │   ├── camera_server.py               # Camera capture service
 │   ├── camera_service_ui.py           # Camera service GUI
@@ -107,7 +107,7 @@ mkdir -p retruxosaproject/app_root/active_state/devices
 
 ### Method 1: Using Main Launcher (Recommended)
 ```bash
-python minimal_launcher.py
+python main_launcher.py
 ```
 
 **First-time setup:**
@@ -200,67 +200,3 @@ The main launcher provides centralized control:
 - **Classes**: Person detection
 - **Input**: Video files (MP4, AVI, MOV, etc.)
 - **Output**: People count with confidence
-
-## 📊 Data Flow
-
-```mermaid
-graph TD
-    A[Camera/Images] --> B[devices/]
-    B --> C[Setup Process]
-    C --> D[last_state/]
-    C --> E[product_information/]
-    C --> F[product_state/]
-    B --> G[Scanner Service]
-    G --> H[AI Detection]
-    H --> I[product_visual/]
-    I --> J[Display Systems]
-    D --> G
-    E --> G
-    F --> G
-```
-
-## 🔧 Configuration
-
-### Directory Paths
-Default paths are relative to project root:
-- **Input**: `retruxosaproject/app_root/active_state/devices/`
-- **Output**: `retruxosaproject/app_root/active_state/product_visual/`
-- **Reference**: `retruxosaproject/app_root/last_state/`
-- **Product Info**: `retruxosaproject/app_root/product_information/`
-- **State**: `retruxosaproject/app_root/product_state/`
-
-### AI Model Settings
-Located in `product_scan/oliwo_weights/xoliwo.py`:
-- **Confidence threshold**: 0.8 (default)
-- **Device**: Auto-detect (CUDA/MPS/CPU)
-- **Slice dimensions**: 512x512 with 45% overlap
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-#### "No images found in devices directory"
-```bash
-# Solution: Add sample images
-cp your_images/*.jpg retruxosaproject/app_root/active_state/devices/
-```
-
-#### "OliwoModel failed to load"
-```bash
-# Check if model files exist
-ls product_scan/oliwo_weights/
-# Ensure model files are properly configured
-```
-
-#### "Camera not detected"
-```bash
-# Check camera permissions and availability
-# Try different camera indices in camera service
-```
-
-#### "Setup fails with path errors"
-```bash
-# Ensure proper directory structure
-python main_launcher.py
-# Click "Refresh Status" to check paths
-```
