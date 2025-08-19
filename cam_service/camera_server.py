@@ -12,7 +12,7 @@ if __name__ == "__main__":
     print("Background Camera Server System")
 
     # Jangan di Ganti
-    root_directory = "/Users/retruxosaproject/app_root/active_state"
+    root_directory = "../retruxosaproject/app_root/active_state"
     root_directory = os.path.join(root_directory, 'devices')
 
     # clear directory

@@ -1,5 +1,7 @@
-#! /bin/zsh
+#!/usr/bin/env zsh
 
-cd /Users/retruxosaproject/app_root/binaries/people_counter
+# pindah ke folder product_scan relatif dari posisi script
+cd "$(dirname "$0")"
 
-/Users/retruxosaproject/.pyenv/versions/popcount_env/bin/python /Users/retruxosaproject/app_root/binaries/people_counter/count.py $@
+# jalankan shelf_scan.py yang ada di folder ini
+python count.py "$@"

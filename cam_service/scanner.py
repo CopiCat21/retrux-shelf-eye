@@ -1,22 +1,26 @@
 import cv2 as cv
 
-def scan_camera(search_limit : int = 100) -> list[int]:
-    valid_cameras :  list[int] = []
+def scan_camera(search_limit: int = 100) -> list[int]:
+    valid_cameras: list[int] = []
     for index in range(search_limit):
-        
-        print("Searching :", index, "->", flush = True, end = ' ') 
+        print("Searching :", index, "->", flush=True, end=' ')
 
-        cam_capture = cv.VideoCapture(index)
-        ret, _      = cam_capture.read()
+        # pakai CAP_V4L2 biar lebih stabil di Linux
+        cam_capture = cv.VideoCapture(index, cv.CAP_V4L2)
+
+        # kasih waktu kamera init
+        if cam_capture.isOpened():
+            ret, _ = cam_capture.read()
+        else:
+            ret = False
+
         cam_capture.release()
 
-        # frame is valid
         if ret:
             print('Valid')
             valid_cameras.append(index)
         else:
-            print("Invalid, Stopping Search !")            
-            break
+            print("Invalid")
     
     return valid_cameras
 
@@ -30,5 +34,3 @@ if __name__ == "__main__":
     pp.pprint(valid_cameras)
 
     print("Scanning Complete")
-
-

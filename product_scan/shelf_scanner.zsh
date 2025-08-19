@@ -1,10 +1,7 @@
-#! /bin/zsh
+#!/usr/bin/env zsh
 
-# Change to the correct project directory
-cd E:/Projects/retrux-shelf-components-main/product_scan
+# pindah ke folder product_scan relatif dari posisi script
+cd "$(dirname "$0")"
 
-# Use python from the current environment
-python shelf_scan.py $@
-
-
-    
+# jalankan shelf_scan.py yang ada di folder ini
+python shelf_scan.py "$@"
